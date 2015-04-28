@@ -137,15 +137,15 @@ function ofType (value,data,type) {
     return true;
   }
 }
+  var fbLogin = document.querySelector('#login');
   Polymer("paper-cms-on-fire", {
 
     ready: function() {
       console.log('Our app is ready to rock!');
-      var fbLogin = document.querySelector('#login');
-      // var fbData = document.querySelector('#base');
       var drawer = document.querySelector('core-drawer-panel');
     },  
     dataChange : function() {
+      console.log('dataChange'); 
       this.processedKeys = this.justCardsOfType(this.keys,this.data,this.cardFilter);
     },
     pageVisible : function(page) {
@@ -185,6 +185,7 @@ function ofType (value,data,type) {
       return false;
     },
     userGroup : function(uid,group){
+      console.log('userGroup') ;
 //      if (this.users[uid].group === group) {  
         return true;
   //    }
@@ -196,6 +197,7 @@ function ofType (value,data,type) {
 //      page(thepage.url,fn);
   //  });
     login : function() {
+      console.log('login') ;
       try {
         this.params = JSON.parse(document.querySelector('#params').value);
       } catch (e) {
@@ -204,6 +206,7 @@ function ofType (value,data,type) {
       fbLogin.login();
     },
     justTypes : function(value,data){
+      console.log('justTypes') ;
       var output = [];
       if (value !== undefined) {
         value.forEach(function(entry) {
@@ -215,6 +218,7 @@ function ofType (value,data,type) {
       return output;
     },
     justCardsOfType : function(value,data,type){
+      console.log('justCardsOfType') ;
       if (type === 'All') {
         return value;
       } else {
@@ -228,19 +232,22 @@ function ofType (value,data,type) {
       }
     },
     logout : function() {
+      console.log('logout') ;
       fbLogin.logout();
     },
     setCardFilter : function(e) {
       this.cardFilter = e.currentTarget.innerHTML;
       this.processedKeys = this.justCardsOfType(this.keys,this.data,this.cardFilter);
     },
-    updatePages : function() { },
-    updateUsers : function() { },
+    updatePages : function() {console.log('updatePages') },
+    updateUsers : function() {console.log('updateUsers') },
     updateSite : function() {
+      console.log('updateSite') ;
       app.appName = this.site.title;
       document.title = this.site.pagetitle;
     },
-    addUser : function() {
+    addUser: function() {
+      console.log('addUser') ;
       if (this.user !== undefined) {
         var uid = CryptoJS.SHA256(this.user.uid) + '';
         console.log('add user ' + uid);
