@@ -144,11 +144,11 @@ function ofType (value,data,type) {
       console.log('Our app is ready to rock!');
       var drawer = document.querySelector('core-drawer-panel');
     },  
-    dataChange : function() {
+    dataChange: function() {
       console.log('dataChange'); 
       this.processedKeys = this.justCardsOfType(this.keys,this.data,this.cardFilter);
     },
-    pageVisible : function(page) {
+    pageVisible: function(page) {
       if (this.user === undefined) {
         if (page.mod[7] === 'r') {
           return true;
@@ -166,7 +166,7 @@ function ofType (value,data,type) {
       return true;// remove
       return false;
     },
-    pageWrite : function(page) {
+    pageWrite: function(page) {
       if (this.user === undefined) {
         if (page.mod[8] === 'w') {
           return true;
@@ -184,20 +184,20 @@ function ofType (value,data,type) {
       return true;// remove
       return false;
     },
-    userGroup : function(uid,group){
-      console.log('userGroup') ;
+    userGroup: function(uid,group){
+      console.log('userGroup');
 //      if (this.users[uid].group === group) {  
         return true;
   //    }
       return false;
     },
-    pageOn : 0,
+    pageOn: 0,
 
 //    this.pages.forEach(function(thepage) {
 //      page(thepage.url,fn);
   //  });
-    login : function() {
-      console.log('login') ;
+    login: function() {
+      console.log('login');
       try {
         this.params = JSON.parse(document.querySelector('#params').value);
       } catch (e) {
@@ -205,8 +205,8 @@ function ofType (value,data,type) {
       }
       fbLogin.login();
     },
-    justTypes : function(value,data){
-      console.log('justTypes') ;
+    justTypes: function(value,data){
+      console.log('justTypes');
       var output = [];
       if (value !== undefined) {
         value.forEach(function(entry) {
@@ -217,8 +217,8 @@ function ofType (value,data,type) {
       }
       return output;
     },
-    justCardsOfType : function(value,data,type){
-      console.log('justCardsOfType') ;
+    justCardsOfType: function(value,data,type){
+      console.log('justCardsOfType');
       if (type === 'All') {
         return value;
       } else {
@@ -231,35 +231,35 @@ function ofType (value,data,type) {
         return output;
       }
     },
-    logout : function() {
-      console.log('logout') ;
+    logout: function() {
+      console.log('logout');
       fbLogin.logout();
     },
-    setCardFilter : function(e) {
+    setCardFilter: function(e) {
       this.cardFilter = e.currentTarget.innerHTML;
       this.processedKeys = this.justCardsOfType(this.keys,this.data,this.cardFilter);
     },
-    updatePages : function() {console.log('updatePages') },
-    updateUsers : function() {console.log('updateUsers') },
-    updateSite : function() {
-      console.log('updateSite') ;
+    updatePages: function() {console.log('updatePages') },
+    updateUsers: function() {console.log('updateUsers') },
+    updateSite: function() {
+      console.log('updateSite');
       app.appName = this.site.title;
       document.title = this.site.pagetitle;
     },
     addUser: function() {
-      console.log('addUser') ;
+      console.log('addUser');
       if (this.user !== undefined) {
         var uid = CryptoJS.SHA256(this.user.uid) + '';
         console.log('add user ' + uid);
         if (this.users[uid] !== undefined ) {
-          this.users[uid] = {group : 'user'}
+          this.users[uid] = {group: 'user'}
         }
       }
     },
-    drawerClose : function() {
+    drawerClose: function() {
       drawer.closeDrawer();
     },
-    cardFilter : 'All'
+    cardFilter: 'All'
   });
  
   </script>
