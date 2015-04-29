@@ -155,129 +155,145 @@ function hasOwnProperty(obj, prop) {
     },
     pageVisible: function(page) {
       console.log('pageVisible');
-      if (this.user === undefined) {
-        if (page.mod[7] === 'r') {
-          return true;
-        }
-      } else {
-        if (page.mod[7] === 'r') { // All
-          return true;
-        } else if (page.mod[4] === 'r') { // Group
-          return this.userGroup(this.uid,page.group);
-        } else if (page.mod[1] === 'r') { // User
-          return this.uid === page.own;
+      if (hasOwnProperty(page,"mod") && hasOwnProperty(page,"own")) {
+        debugger;
+        if (page.mod.length === 10) {
+          if (this.user === undefined) {
+            if (page.mod[7] === 'r') {
+              return true;
+            }
+          } else {
+            if (!hasOwnProperty(this,"uid")) {
+              var uid = CryptoJS.SHA256(this.user.uid) + '';
+              console.log('add user here  ' + uid);
+              this.uid = uid;
+            } 
+            if (page.mod[7] === 'r') { // All
+              return true;
+            } else if (page.mod[4] === 'r' && this.userGroup(this.uid,page.group)) { // Group
+              return true;
+            } else if (page.mod[1] === 'r' && this.uid === page.own) { // User
+              return true;
+            }
+          }
         }
       }
-      return false;
+    return false;
     },
     pageWrite: function(page) {
-      console.log('pageWrite');
-      if (this.user === undefined) {
-        if (page.mod[8] === 'w') {
-          return true;
-        }
-      } else {
-        if (page.mod[2] === 'w' && this.uid === page.own) { // User
-          return true;
-        } else if (page.mod[5] === 'w' && this.userGroup(this.uid,page.group)) { // Group
-          return true;
-        } else if (page.mod[8] === 'w') { // All
-          return true;
+    console.log('pageWrite');
+    if (this.user === undefined) {
+      if (hasOwnProperty(page,"mod") && hasOwnProperty(page,"own")) {
+        if (page.mod.length === 9) {
+          if (page.mod[8] === 'w') {
+            return true;
+          }
+        } else {
+          if (!hasOwnProperty(this,"uid")) {
+            var uid = CryptoJS.SHA256(this.user.uid) + '';
+            console.log('add user here  ' + uid);
+            this.uid = uid;
+          }
+          if (page.mod[8] === 'w') { // All
+            return true;
+            } else if (page.mod[5] === 'w' && this.userGroup(this.uid,page.group)) { // Group
+            return true;
+            } else if (page.mod[2] === 'w' && this.uid === page.own) { // User
+            return true;
+          }
         }
       }
-      return false;
-    },
-    userGroup: function(uid,group){
-      console.log('userGroup');
-      if (this.users.uid.group === group) {  
-        return true;
-      }
-      return false;
-    },
-    pageOn: 0,
-    login: function() {
-      console.log('login');
-      try {
-        this.params = JSON.parse(document.querySelector('#params').value);
+    }
+    return false;
+  },
+  userGroup: function(uid,group){
+    console.log('userGroup');
+    if (this.users.uid.group === group) {  
+      return true;
+    }
+    return false;
+  },
+  pageOn: 0,
+  login: function() {
+    console.log('login');
+    try {
+      this.params = JSON.parse(document.querySelector('#params').value);
       } catch (e) {
-        this.params = null;
-      }
-      this.$.login.login();
-    },
-    justTypes: function(value,data){
-      console.log('justTypes');
-      var output = [];
-      if (value !== undefined) {
-        value.forEach(function(entry) {
-          if (firstType(entry,data)) {
-            output.push(entry); 
-          }
-        });
-      }
-      return output;
-    },
-    justCardsOfType: function(value,data,type){
-      console.log('justCardsOfType');
-      if (type === 'All') {
-        return value;
-      } else {
-        var output = [];
-        value.forEach(function(entry) {
-          if (ofType(entry,data,type)) {
-            output.push(entry); 
-          }
-        });
-        return output;
-      }
-    },
-    logout: function() {
-      console.log('logout');
-      this.$.login.logout();
-    },
-    setCardFilter: function(e) {
-      this.cardFilter = e.currentTarget.innerHTML;
-      this.processedKeys = this.justCardsOfType(this.keys,this.data,this.cardFilter);
-    },
-    updatePages: function() {console.log('updatePages') },
-    user: {},
-    userChanged: function() {
-      if(this.user !== null) {
-        this.addUser() //this.$.users.data = this.users;
-      }
-      console.log('userChanged') 
-    },
-    updateUsers: function() {console.log('updateUsers') },
-    pagesChanged: function() {
-      console.log('pagesChanged');
-      console.log(this.pages);
-    },
-    usersChanged: function() {
-      if(this.user !== null) {
-        this.addUser();
-      }
-      console.log(this.users);
-      console.log('usersChanged');
-    },
-    updateSite: function() {
-      console.log('updateSite');
-      app.appName = this.site.title;
-      document.title = this.site.pagetitle;
-    },
-    addUser: function(e) {
-      console.log('addUser');
-      if (hasOwnProperty(this.user,"uid")) {
-        var uid = CryptoJS.SHA256(this.user.uid) + '';
-        console.log('add user here  ' + uid);
-        this.uid = uid;
-        if (!hasOwnProperty(this.users,"uid")) {
-          var userX = {};
-          userX[uid] = {hi:321};  
-          this.users = {uid:uid,userdata:userX};
+      this.params = null;
+    }
+    this.$.login.login();
+  },
+  justTypes: function(value,data){
+    console.log('justTypes');
+    var output = [];
+    if (value !== undefined) {
+      value.forEach(function(entry) {
+        if (firstType(entry,data)) {
+          output.push(entry); 
         }
+      });
+    }
+    return output;
+  },
+  justCardsOfType: function(value,data,type){
+    console.log('justCardsOfType');
+    if (type === 'All') {
+      return value;
+    } else {
+      var output = [];
+      value.forEach(function(entry) {
+        if (ofType(entry,data,type)) {
+          output.push(entry); 
+        }
+      });
+      return output;
+    }
+  },
+  logout: function() {
+    console.log('logout');
+    this.$.login.logout();
+  },
+  setCardFilter: function(e) {
+    this.cardFilter = e.currentTarget.innerHTML;
+    this.processedKeys = this.justCardsOfType(this.keys,this.data,this.cardFilter);
+  },
+  updatePages: function() {console.log('updatePages'); },
+  user: {},
+  userChanged: function() {  console.log('userChanged');  
+    if(this.user !== null) {
+      this.addUser() //this.$.users.data = this.users;
+    }
+  },
+  updateUsers: function() { console.log('updateUsers'); },
+  pagesChanged: function() { console.log('pagesChanged');
+    console.log(this.pages);
+  },
+  usersChanged: function() {console.log('usersChanged');
+    if(this.user !== null) {
+      this.addUser();
+    }
+    console.log(this.users);
+  },
+  updateSite: function() {
+    console.log('updateSite');
+    app.appName = this.site.title;
+    document.title = this.site.pagetitle;
+  },
+  addUser: function(e) {
+    console.log('addUser');
+    if (hasOwnProperty(this.user,"uid")) {
+      var uid = CryptoJS.SHA256(this.user.uid) + '';
+      console.log('add user here  ' + uid);
+      this.uid = uid;
+      if (!hasOwnProperty(this.users,"uid")) {
+        var userX = {};
+        userX[uid] = {hi:321};  
+        this.users = {uid:uid,userdata:userX};
       }
-    },
-    cardFilter: 'All'
-  });
- 
+    }
+  },
+  cardFilter: 'All'
+});
+
   </script>
-</polymer-element>
+  </polymer-element>
