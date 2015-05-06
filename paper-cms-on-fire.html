@@ -77,9 +77,10 @@
           <section hidden?="{{!statusKnown || !user}}" >
             <h1>Setting</h1>
             <template repeat="{{pageKey in pagesKeys}}">
-              <core-item  hidden?="{{!pageWrite(pages[pageKey])}}" >
+              <core-item>
                 <paper-form-on-fire label="Edit: {{pages[pageKey].title}}"
                   content="{{pages[pageKey]}}"
+                  content_key="{{pageKey}}"
                   firebase_url_data="https://{{app}}.firebaseio.com/pages"
                   firebase_url_form="https://{{app}}.firebaseio.com/form"
                   form_json="form-export.json"
