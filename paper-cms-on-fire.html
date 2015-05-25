@@ -159,7 +159,7 @@ function hasOwnProperty(obj, prop) {
       if (hasOwnProperty(page,"mod") && hasOwnProperty(page,"own")) {
         debugger;
         if (page.mod.length === 10) {
-          if (this.user === undefined) {
+          if (this.user === undefined || this.user === null ) {
             if (page.mod[7] === 'r') {
               return true;
             }
