@@ -6,21 +6,21 @@
   },
   "01 Url" : {
     "id" : "url",
-    "type" : "text"
+    "type" : "hidden"
   },
   "02 Mod" : {
     "id" : "mod",
     "options" : [ "-rw-rw-r--", "-rw-r--r--" ],
     "required" : 1,
-    "type" : "option"
+    "type" : "hidden"
   },
   "03 Group" : {
     "id" : "group",
-    "type" : "text"
+    "type" : "hidden"
   },
   "03 Own" : {
     "id" : "own",
-    "type" : "text"
+    "type" : "hidden"
   },
   "04 HTML" : {
     "id" : "html",
