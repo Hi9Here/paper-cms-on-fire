@@ -15,6 +15,7 @@
 <link rel="import" href="../juicy-html/juicy-html.html">
 <link rel="import" href="../crypto-js/crypto-js-sha256.html">
 <link rel="import" href="../paper-form-on-fire/paper-form-on-fire.html">
+<link rel="import" href="../core-ajax/core-ajax.html">
 
   <polymer-element name="paper-cms-on-fire" attributes="app">
 
@@ -83,7 +84,6 @@
                   content_key="{{pageKey}}"
                   firebase_url_data="https://{{app}}.firebaseio.com/pages"
                   firebase_url_form="https://{{app}}.firebaseio.com/form"
-                  form_json="form-export.json"
                 >
                 </paper-form-on-fire>
               </core-item>
@@ -92,9 +92,11 @@
             <paper-form-on-fire label="add page" 
               firebase_url_data="https://{{app}}.firebaseio.com/pages"
               firebase_url_form="https://{{app}}.firebaseio.com/form"
-              form_json="form-export.json"
-              >
+              form="{{pageForm}}"
+            >
             </paper-form-on-fire>
+            <core-ajax auto url="form.json" handleAs="json" on-core-response="{{handleResponse}}"></core-ajax>
+
             <paper-button on-tap='{{logout}}'>Logout</paper-button>
             
           </section>
@@ -150,6 +152,9 @@ function hasOwnProperty(obj, prop) {
     ready: function() {
       console.log('Our app is ready to rock!');
     },  
+    handleResponse: function(e) {
+      this.form = e.detail.response;
+    },
     dataChange: function() {
       console.log('dataChange'); 
       this.processedKeys = this.justCardsOfType(this.keys,this.data,this.cardFilter);
@@ -159,7 +164,7 @@ function hasOwnProperty(obj, prop) {
       if (hasOwnProperty(page,"mod") && hasOwnProperty(page,"own")) {
         debugger;
         if (page.mod.length === 10) {
-          if (this.user === undefined || this.user === null ) {
+          if (this.user === undefined || this.user === null) {
             if (page.mod[7] === 'r') {
               return true;
             }
